@@ -20,7 +20,9 @@ Gem::Specification.new do |s|
   s.summary = 'Polygon API.'
   s.add_dependency 'faraday', '>= 1.00'
   s.add_dependency 'faraday_middleware'
-  s.add_dependency 'oj'
+  if RUBY_PLATFORM != 'java'
+    s.add_dependency 'oj', '~> 3.14.2'
+  end
   s.add_development_dependency 'rake', '~> 10'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rubocop', '0.72.0'
