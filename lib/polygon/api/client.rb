@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Polygon
   module Api
     class Client
@@ -10,8 +8,13 @@ module Polygon
 
       def initialize(options = {})
         Config::ATTRIBUTES.each do |key|
-          send("#{key}=", options[key] || Polygon::Api.config.send(key))
+          send("#{key}=", options[key]) || Polygon::Api.config.send(key)
         end
+      end
+      private
+
+      def endpoint
+        "https://api.polygon.io" # Replace this with your actual API endpoint
       end
     end
   end

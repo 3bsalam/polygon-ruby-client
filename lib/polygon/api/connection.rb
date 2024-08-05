@@ -23,13 +23,19 @@ module Polygon
           request_options[:open_timeout] = open_timeout if open_timeout
           request_options[:params_encoder] = Faraday::FlatParamsEncoder
           options[:request] = request_options if request_options.any?
-
-          ::Faraday::Connection.new(endpoint, options) do |connection|
-            connection.use Faraday::Response::RaiseError
-            connection.use ::FaradayMiddleware::ParseOj, content_type: /\bjson$/
-            connection.response :logger, logger if logger
-            connection.adapter ::Faraday.default_adapter
+          connection = ::Faraday::Connection.new(endpoint, options) do |conn|
+            conn.use Faraday::Response::RaiseError
+            if RUBY_PLATFORM == 'java'
+              conn.use FaradayMiddleware::ParseJson, content_type: /\bjson$/
+            else
+              conn.use FaradayMiddleware::ParseOj, content_type: /\bjson$/
+            end
+            conn.response :logger, logger if logger
+            conn.adapter ::Faraday.default_adapter
           end
+
+          puts "Connection initialized: #{connection.inspect}" # Debugging line to inspect the connection object
+          connection
         end
       end
     end

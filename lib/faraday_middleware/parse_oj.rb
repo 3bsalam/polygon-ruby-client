@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
-module FaradayMiddleware
-  class ParseOj < ResponseMiddleware
-    dependency 'oj'
+require 'faraday'
+require 'oj'
 
-    define_parser do |body|
-      Oj.load(body, mode: :compat, symbol_keys: true) unless body.strip.empty?
+module FaradayMiddleware
+  class ParseOj < Faraday::Response::Middleware
+    def on_complete(env)
+      env[:body] = Oj.load(env[:body], mode: :compat, symbol_keys: true) unless env[:body].strip.empty?
     end
   end
 end
 
-Faraday::Response.register_middleware oj: FaradayMiddleware::ParseOj
+Faraday::Response.register_middleware parse_oj: FaradayMiddleware::ParseOj
