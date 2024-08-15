@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Polygon
   module Api
     module Endpoints
@@ -19,7 +17,7 @@ module Polygon
       end
 
       def aggregates(symbol:, multiplier:, timespan:, from:, to:, adjusted:, options: {})
-        get("/v2/aggs/ticker/#{symbol}/range/#{multiplier}/#{timespan}/#{from}/#{to}/#{adjusted}", { apiKey: api_key }.merge(options))
+        get("/v2/aggs/ticker/#{symbol}/range/#{multiplier}/#{timespan}/#{from}/#{to}", { apiKey: api_key, adjusted: adjusted }.merge(options))
       end
 
       def snapshot
