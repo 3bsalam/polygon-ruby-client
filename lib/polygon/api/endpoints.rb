@@ -18,8 +18,8 @@ module Polygon
         end
       end
 
-      def aggregates(symbol:, multiplier:, timespan:, from:, to:, options: {})
-        get("/v2/aggs/ticker/#{symbol}/range/#{multiplier}/#{timespan}/#{from}/#{to}", { apiKey: api_key }.merge(options))
+      def aggregates(symbol:, multiplier:, timespan:, from:, to:, adjusted:, options: {})
+        get("/v2/aggs/ticker/#{symbol}/range/#{multiplier}/#{timespan}/#{from}/#{to}/#{adjusted}", { apiKey: api_key }.merge(options))
       end
 
       def snapshot
